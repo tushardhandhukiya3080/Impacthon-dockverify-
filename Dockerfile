@@ -12,8 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Install production dependencies first (better layer caching).
-COPY package*.json ./
-RUN npm ci --omit=dev
+# .npmrc sets legacy-peer-deps=true to avoid an ERESOLVE conflict from a
+# React 18-only devDependency while the app uses React 19.
+COPY package*.json .npmrc ./
+RUN npm ci --omit=dev --legacy-peer-deps
 
 # Copy the rest of the application source.
 COPY . .
