@@ -1,0 +1,45 @@
+# Render Blueprint for DocVerify
+# Repo root is this folder (docV), so the Dockerfile sits at ./Dockerfile.
+# Secrets use `sync: false` -> Render asks for them in the dashboard, so they
+# are NEVER committed to the (public) repo.
+services:
+  - type: web
+    name: docverify
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      # Render injects PORT automatically; the app reads process.env.PORT.
+      - key: NODE_ENV
+        value: production
+      # Render serves HTTPS, so keep secure cookies ON here.
+      - key: COOKIE_SECURE
+        value: "true"
+
+      # ---- secrets: set these in the Render dashboard (sync: false) ----
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: WEB3_PROVIDER_URL
+        sync: false
+      - key: ACCOUNT_ADDRESS
+        sync: false
+      - key: PRIVATE_KEY
+        sync: false
+      - key: PINATA_API_KEY
+        sync: false
+      - key: PINATA_SECRET_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: DOC_MASTER_KEY
+        sync: false
+      - key: OCR_SERVICE_URL
+        sync: false
