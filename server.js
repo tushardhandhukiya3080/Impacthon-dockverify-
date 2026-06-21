@@ -136,7 +136,10 @@ app.use(
         saveUninitialized: false,
         store: sessionStore,
         cookie: {
-            secure: process.env.NODE_ENV === 'production',
+            // Secure cookies require HTTPS. Default OFF so the app works over
+            // plain http://<vps-ip> for now; set COOKIE_SECURE=true once a
+            // domain + HTTPS is in place (recommended for production).
+            secure: process.env.COOKIE_SECURE === 'true',
             sameSite: 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7
         },
